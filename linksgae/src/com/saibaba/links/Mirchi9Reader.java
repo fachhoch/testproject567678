@@ -2,9 +2,8 @@ package com.saibaba.links;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
@@ -18,7 +17,7 @@ import org.htmlparser.util.NodeList;
 public class Mirchi9Reader {
 	
 	private Map<String, String>  links= new HashMap<String, String>();
-	private final Log log = LogFactory.getLog(getClass()); 
+	private static final Logger log = Logger.getLogger(Mirchi9Reader.class.getName()); 
 	
 	Map<String, String>  getLinks(){
 		return links;
@@ -35,7 +34,7 @@ public class Mirchi9Reader {
 	}
 	private void  readMirci9(String url) throws Exception{
 		System.out.println("url " + url);
-		log.debug(" url "+url);
+		log.info(" url "+url);
 		NodeList  mainContentDivs =parse(url);
 		NodeList  postThumbnailDiv=mainContentDivs.extractAllNodesThatMatch(new HasAttributeFilter("class","Post thumbnailview"), true);
 		NodeList  anchorTags=postThumbnailDiv.extractAllNodesThatMatch(new NodeFilter() {
@@ -52,7 +51,7 @@ public class Mirchi9Reader {
 			LinkTag  linkTag =(LinkTag)  node;
 			//System.out.println(linkTag.getLinkText()+"  "+);
 			String videolink=getVideoLink(linkTag.extractLink());
-			log.debug(linkTag.getLinkText()+" "+videolink);
+			log.info(linkTag.getLinkText()+" "+videolink);
 			links.put(linkTag.getLinkText(),videolink);
 		}
 		NodeList  navigationList=mainContentDivs.extractAllNodesThatMatch(new HasAttributeFilter("class", "navigation"), true);
@@ -78,7 +77,7 @@ public class Mirchi9Reader {
 			Tag tag=(Tag)node;
 			return tag.getAttribute("src");
 		}
-		return url+"-"+"*********************";
+		return "N/A"+"-"+"*********************";
 	}
 	
 	
