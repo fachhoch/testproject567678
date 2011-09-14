@@ -4,6 +4,11 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+
+<!-- 	<listener> -->
+<!-- 		<listener-class>com.saibaba.links.MyListner</listener-class> -->
+<!-- 	</listener> -->
+
 	<servlet>
 		<servlet-name>Links</servlet-name>
 		<servlet-class>com.saibaba.links.LinksServlet</servlet-class>
@@ -16,7 +21,31 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
-	<listener>
-		<listener-class>com.saibaba.links.MyListner</listener-class>
-	</listener>
+	<servlet>
+		<servlet-name>GAEJCronServlet</servlet-name>
+		<servlet-class>com.saibaba.links.GAEJCronServlet</servlet-class>
+	</servlet>
+ 
+	<servlet-mapping>
+		<servlet-name>GAEJCronServlet</servlet-name>
+		<url-pattern>/cron/gaejcronjob</url-pattern>
+	</servlet-mapping>	
+	
+	
+	<servlet>
+	<servlet-name>GAEJCreateTaskServlet</servlet-name>
+	<servlet-class>com.saibaba.links.GAEJCreateTaskServlet</servlet-class>
+	</servlet>
+	<servlet>
+	<servlet-name>GAEJSignupSubscriberServlet</servlet-name>
+	<servlet-class>com.saibaba.links.GAEJSignupSubscriberServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>GAEJSignupSubscriberServlet</servlet-name>
+	<url-pattern>/gaejsignupsubscriber</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	<servlet-name>GAEJCreateTaskServlet</servlet-name>
+	<url-pattern>/gaejcreatetask</url-pattern>
+	</servlet-mapping>	
 </web-app>
