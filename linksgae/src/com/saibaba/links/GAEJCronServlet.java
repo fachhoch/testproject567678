@@ -24,7 +24,7 @@ public class GAEJCronServlet extends HttpServlet {
 				mirchi9Reader= new Mirchi9Reader();
 				log.info("finish reaing url");
 				log.log(Level.INFO, String.valueOf(mirchi9Reader.getLinks().size()));
-			req.getSession().getServletContext().setAttribute("links", mirchi9Reader!=null ?mirchi9Reader.getLinks():new HashMap<String, String>());
+				MyLinks.getInstance().addFromMirchi9(mirchi9Reader);
 		} catch (Exception ex) {
 			log.log(Level.SEVERE, "Uncaught exception", ex);
 		}

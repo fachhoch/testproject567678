@@ -9,6 +9,7 @@ public class LinksServlet extends HttpServlet {
 			throws IOException {
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Hello, world");
+		req.setAttribute("linksMap", MyLinks.getInstance().getLinks());
 		try{
 			 getServletConfig().getServletContext().getRequestDispatcher(
 		        "/jsp/links.jsp").forward(req,resp);

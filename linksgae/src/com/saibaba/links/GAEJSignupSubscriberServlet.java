@@ -20,6 +20,7 @@ public class GAEJSignupSubscriberServlet extends HttpServlet {
 		try {
 			_logger.log(Level.INFO, "staerting task");
 			Mirchi9Reader  mirchi9Reader= new Mirchi9Reader();
+			MyLinks.getInstance().addFromMirchi9(mirchi9Reader);
 			_logger.log(Level.INFO, "task finished");
 			resp.getWriter().println(strCallResult);
 		} catch (Exception ex) {
