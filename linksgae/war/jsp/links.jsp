@@ -12,7 +12,7 @@
 	
 	<%
 		
-	 	HashMap<String,String> map= (HashMap)pageContext.getServletContext().getAttribute("links");
+	 	HashMap<String,String> map= (HashMap)request.getAttribute("linksMap");
 	%>
 	<table>
 	<tr>
