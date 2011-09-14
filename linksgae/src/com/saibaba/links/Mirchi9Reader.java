@@ -1,9 +1,13 @@
 package com.saibaba.links;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.tools.ant.util.CollectionUtils;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
@@ -13,6 +17,8 @@ import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
+
+import com.google.appengine.repackaged.com.google.common.base.Joiner;
 
 public class Mirchi9Reader {
 	
@@ -28,6 +34,7 @@ public class Mirchi9Reader {
 		System.setProperty ("sun.net.client.defaultConnectTimeout", "70000");
 		try{
 			readMirci9("http://www.mirchi9.com/cinemas/");
+			//readTeluguFreeLinks("http://telugufreelinks.blogspot.com/search/label/telugu%20movies?max-results=100");
 		}catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -87,6 +94,50 @@ public class Mirchi9Reader {
 		return nodeList;
 	 }
 	
+	 private void readTeluguFreeLinks(String url)throws Exception{
+		 Parser  parser= new Parser(url);
+		 NodeList pageNodeList= parser.parse(new HasAttributeFilter("class", "widget Blog"));
+		 NodeList blogPostNodeList= pageNodeList.extractAllNodesThatMatch(new HasAttributeFilter("class", "blog-posts hfeed"), true);
+		 NodeList  h3NodeLists=blogPostNodeList.extractAllNodesThatMatch(new HasAttributeFilter("class", "new"), true);
+		 
+		 for(NodeIterator  iterator=h3NodeLists.elements() ; iterator.hasMoreNodes();){
+			Node node=iterator.nextNode();	
+			LinkTag  linkTag=(LinkTag)node.getChildren().elementAt(0);
+			log.info("name "+linkTag.getLinkText());
+			NodeList videoLinkNodeList= new Parser(linkTag.extractLink())
+			.parse(new HasAttributeFilter("class", "post-body entry-content"))
+			.extractAllNodesThatMatch(new NodeFilter() {
+				@Override
+				public boolean accept(Node node) {
+					if(node  instanceof  LinkTag){
+						LinkTag  linkTag=(LinkTag)node;
+						return StringUtils.contains(linkTag.extractLink(), "http://telugufreelinks.ulmb.com/");
+					}
+					return false;
+				}
+			}, true);
+			List links= teluguFreeLinksVideoLink(videoLinkNodeList);
+			log.info("link "+Joiner.on(',').join(links));
+		 }		
+		 NodeList blogPager= pageNodeList.extractAllNodesThatMatch(new HasAttributeFilter("id", "blog-pager"), true);
+		 NodeList  olderNodeList=pageNodeList.extractAllNodesThatMatch(new HasAttributeFilter("id","Blog11_blog-pager-older-link"), true);
+		 for(NodeIterator  iterator=olderNodeList.elements() ; iterator.hasMoreNodes();){
+				Node node=iterator.nextNode();	
+				LinkTag  linkTag=(LinkTag)node;
+				readTeluguFreeLinks(linkTag.getLink());
+		 }
+	 }
+
+	 private List teluguFreeLinksVideoLink(NodeList  srcNodeList)  throws Exception{
+		List<String>  links= new ArrayList<String>();
+		for(NodeIterator  iterator=srcNodeList.elements() ; iterator.hasMoreNodes();){
+				Node node=iterator.nextNode();	
+				LinkTag  linkTag=(LinkTag)node;
+				String url=StringUtils.remove(linkTag.getLink(), "amp;");
+				links.add(getVideoLink(url));
+		 }
+		 return links;
+	}
 	
 	
 }
