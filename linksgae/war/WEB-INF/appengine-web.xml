@@ -7,6 +7,6 @@
 	<system-properties>
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
 	</system-properties>
-<!-- 	 <warmup-requests-enabled>false</warmup-requests-enabled> -->
-<!-- 	 <threadsafe>true</threadsafe> -->
+	 <warmup-requests-enabled>false</warmup-requests-enabled>
+	 <threadsafe>true</threadsafe>
 </appengine-web-app>
