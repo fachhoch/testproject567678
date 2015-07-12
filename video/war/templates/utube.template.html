@@ -1,0 +1,35 @@
+<script type="text/x-template" id="searchTemplate">
+<div>
+	<input id="searchText"  type="text" size="100">
+	<button onclick="app.search()">Search</button>	
+</div>
+</script>
+<script type="text/x-template" id="resultsTemplate">
+<div >
+	{{#each items}}
+		<div  style="display:inline-block; padding-right:1em; padding-bottom:1em; " >
+			<div style="width:10em;wrod-wrap:break-word;">
+				<label>Tittle :{{snippet.title}}</label>
+				<img  src="{{snippet.thumbnails.default.url}}">	
+			</div>
+			<div>
+				<a href="http://www.youtube.com/watch?v={{id.videoId}}"  class="youtube" rel="prettyPhoto" width="60">Video Link</a>
+			</div>
+		</div>
+	{{/each}}
+</div>
+</script>
+
+<script type="text/x-template" id="noResultsTemplate">
+<div>
+	<label>No resuls found </label>
+</div>
+</script>
+
+
+<script type="text/x-template" id="content">
+	<div>
+		<div style="padding-bottom:1em;"  id="search"/>
+		<div id="results"/>
+	</div>
+</script>	
